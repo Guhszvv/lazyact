@@ -32,7 +32,7 @@ pub fn draw(frame: &mut Frame, app: &mut App, area: Rect) {
                 HistoryStatus::Success => "✓",
                 HistoryStatus::Failed => "✗",
             };
-            ListItem::new(format!("{} {}", icon, entry.name))
+            ListItem::new(format!(" {} {}", icon, entry.name))
         })
         .collect();
 
