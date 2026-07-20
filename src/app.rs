@@ -1,5 +1,4 @@
-use ratatui::crossterm::event::KeyEvent;
-use ratatui::widgets::ListState;
+use ratatui::crossterm::event::{KeyEvent, MouseEvent};
 
 use crate::app_event::{AppEvent, EventReceiver};
 use crate::input::{Command, KeyMap};
@@ -28,7 +27,7 @@ impl App {
             Ok(Some(path)) => crate::github::list_actions(&path).unwrap_or_default(),
             _ => Vec::new(),
         };
-        let state = ListState::default().with_selected(Some(0));
+        let state = ratatui::widgets::ListState::default().with_selected(Some(0));
         let (tx, rx) = crate::app_event::new_event_channel();
         Self {
             running: true,
@@ -44,6 +43,16 @@ impl App {
     pub fn handle_key(&mut self, key: KeyEvent) {
         let Some(command) = self.keymap.resolve(key) else {
             return;
+        };
+        self.handle_command(command);
+    }
+
+    pub fn handle_mouse(&mut self, mouse: MouseEvent) {
+        use ratatui::crossterm::event::MouseEventKind;
+        let command = match mouse.kind {
+            MouseEventKind::ScrollUp => Command::ScrollUp,
+            MouseEventKind::ScrollDown => Command::ScrollDown,
+            _ => return,
         };
         self.handle_command(command);
     }

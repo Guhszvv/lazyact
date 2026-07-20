@@ -8,4 +8,10 @@ pub enum Command {
     FocusLogs,
     SelectNext,
     SelectPrevious,
+    ScrollUp,
+    ScrollDown,
+    ScrollPageUp,
+    ScrollPageDown,
+    ScrollTop,
+    ScrollBottom,
 }

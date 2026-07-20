@@ -23,6 +23,10 @@ impl KeyMap {
             KeyCode::Char('3') => Some(Command::FocusLogs),
             KeyCode::Up => Some(Command::SelectPrevious),
             KeyCode::Down => Some(Command::SelectNext),
+            KeyCode::PageUp => Some(Command::ScrollPageUp),
+            KeyCode::PageDown => Some(Command::ScrollPageDown),
+            KeyCode::Home => Some(Command::ScrollTop),
+            KeyCode::End => Some(Command::ScrollBottom),
             _ => None,
         }
     }
