@@ -7,8 +7,9 @@ use ratatui::{
 };
 
 pub fn draw(frame: &mut Frame, app: &mut App, area: Rect) {
-    let focused = app.focus == Focus::Workflow;
+    let focused = app.focus == Focus::Workflows;
     let items: Vec<ListItem> = app
+        .workflow_panel
         .workflows
         .iter()
         .map(|wf| ListItem::new(wf.name.clone()))
@@ -20,6 +21,6 @@ pub fn draw(frame: &mut Frame, app: &mut App, area: Rect) {
         } else {
             Style::default()
         });
-    let list = List::new(items).block(block);
-    frame.render_widget(list, area);
+    let list = List::new(items).block(block).highlight_symbol(">>");
+    frame.render_stateful_widget(list, area, &mut app.workflow_panel.list_state);
 }
