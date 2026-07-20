@@ -3,7 +3,7 @@ use ratatui::{
     Frame,
     layout::Rect,
     style::{Color, Style},
-    widgets::{Block, List, ListItem},
+    widgets::{Block, BorderType, List, ListItem},
 };
 
 pub fn draw(frame: &mut Frame, app: &mut App, area: Rect) {
@@ -20,7 +20,8 @@ pub fn draw(frame: &mut Frame, app: &mut App, area: Rect) {
             Style::default().fg(Color::Red)
         } else {
             Style::default()
-        });
-    let list = List::new(items).block(block).highlight_symbol(">>");
+        })
+        .border_type(BorderType::Rounded);
+    let list = List::new(items).block(block).highlight_symbol("> ");
     frame.render_stateful_widget(list, area, &mut app.workflow_panel.list_state);
 }

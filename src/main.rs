@@ -6,12 +6,11 @@ mod input;
 mod panels;
 mod ui;
 
-use std::time::Duration;
-
 use app::App;
 use ratatui::DefaultTerminal;
 use ratatui::crossterm::event::{self, Event, poll, read};
 use ratatui::crossterm::execute;
+use std::time::Duration;
 
 #[tokio::main]
 async fn main() -> std::io::Result<()> {

@@ -2,7 +2,7 @@ use ratatui::{
     Frame,
     layout::Rect,
     style::{Color, Style},
-    widgets::{Block, List, ListItem},
+    widgets::{Block, BorderType, List, ListItem},
 };
 
 use crate::app::{App, Focus};
@@ -11,11 +11,14 @@ use crate::panels::history::HistoryStatus;
 pub fn draw(frame: &mut Frame, app: &mut App, area: Rect) {
     let focused = app.focus == Focus::History;
     let title = "[2] History";
-    let block = Block::bordered().title_top(title).border_style(if focused {
-        Style::default().fg(Color::Red)
-    } else {
-        Style::default()
-    });
+    let block = Block::bordered()
+        .title_top(title)
+        .border_style(if focused {
+            Style::default().fg(Color::Red)
+        } else {
+            Style::default()
+        })
+        .border_type(BorderType::Rounded);
 
     app.history_panel.rattle.tick();
 
@@ -26,8 +29,8 @@ pub fn draw(frame: &mut Frame, app: &mut App, area: Rect) {
         .map(|entry| {
             let icon = match &entry.status {
                 HistoryStatus::Running => app.history_panel.rattle.current_frame(),
-                HistoryStatus::Success => "",
-                HistoryStatus::Failed => "",
+                HistoryStatus::Success => "✓",
+                HistoryStatus::Failed => "✗",
             };
             ListItem::new(format!("{} {}", icon, entry.name))
         })

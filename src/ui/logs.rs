@@ -3,20 +3,21 @@ use ratatui::{
     Frame,
     layout::{Constraint, Layout, Rect},
     style::{Color, Style},
-    widgets::{
-        Block, Paragraph, Scrollbar, ScrollbarOrientation, ScrollbarState,
-    },
     text::Line,
+    widgets::{Block, BorderType, Paragraph, Scrollbar, ScrollbarOrientation, ScrollbarState},
 };
 
 pub fn draw(frame: &mut Frame, app: &mut App, area: Rect) {
     let focuses = app.focus == Focus::Logs;
     let title = "[3] Logs";
-    let container = Block::bordered().title_top(title).border_style(if focuses {
-        Style::default().fg(Color::Red)
-    } else {
-        Style::default()
-    });
+    let container = Block::bordered()
+        .title_top(title)
+        .border_style(if focuses {
+            Style::default().fg(Color::Red)
+        } else {
+            Style::default()
+        })
+        .border_type(BorderType::Rounded);
 
     let inner = container.inner(area);
     let chunks = Layout::horizontal([Constraint::Fill(1), Constraint::Length(1)]).split(inner);
