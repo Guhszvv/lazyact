@@ -16,6 +16,7 @@ impl WorkflowPanel {
             list_state,
         }
     }
+
     fn run_workflow(&mut self) {
         if let Some(item) = self.list_state.selected() {
             let Some(path) = self.workflows.get(item).map(|w| w.path.clone()) else {

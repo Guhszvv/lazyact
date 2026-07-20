@@ -20,6 +20,7 @@ impl KeyMap {
             KeyCode::Char('r') => Some(Command::RunWorkflow),
             KeyCode::Char('1') => Some(Command::FocusWorkflow),
             KeyCode::Char('2') => Some(Command::FocusHistory),
+            KeyCode::Char('3') => Some(Command::FocusLogs),
             KeyCode::Up => Some(Command::SelectPrevious),
             KeyCode::Down => Some(Command::SelectNext),
             _ => None,

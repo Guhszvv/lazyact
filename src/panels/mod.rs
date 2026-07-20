@@ -1,6 +1,8 @@
 pub mod history;
+pub mod logs;
 pub mod workflows;
 pub use history::HistoryPanel;
+pub use logs::LogsPanel;
 pub use workflows::WorkflowPanel;
 
 use crate::input::Command;

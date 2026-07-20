@@ -2,12 +2,13 @@ use ratatui::crossterm::event::KeyEvent;
 use ratatui::widgets::ListState;
 
 use crate::input::{Command, KeyMap};
-use crate::panels::{HistoryPanel, Panel, WorkflowPanel};
+use crate::panels::{HistoryPanel, LogsPanel, Panel, WorkflowPanel};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Focus {
     Workflows,
     History,
+    Logs,
 }
 
 pub struct App {
@@ -16,6 +17,7 @@ pub struct App {
     pub focus: Focus,
     pub workflow_panel: WorkflowPanel,
     pub history_panel: HistoryPanel,
+    pub logs_panel: LogsPanel,
 }
 
 impl App {
@@ -31,6 +33,7 @@ impl App {
             focus: Focus::Workflows,
             workflow_panel: WorkflowPanel::new(workflows, state),
             history_panel: HistoryPanel::new(),
+            logs_panel: LogsPanel::new(),
         }
     }
 
@@ -46,6 +49,7 @@ impl App {
             Command::Quit => self.running = false,
             Command::FocusWorkflow => self.focus = Focus::Workflows,
             Command::FocusHistory => self.focus = Focus::History,
+            Command::FocusLogs => self.focus = Focus::Logs,
             cmd => self.focused_panel_mut().handle_command(cmd),
         }
     }
@@ -54,6 +58,7 @@ impl App {
         match self.focus {
             Focus::Workflows => &mut self.workflow_panel,
             Focus::History => &mut self.history_panel,
+            Focus::Logs => &mut self.logs_panel,
         }
     }
 }

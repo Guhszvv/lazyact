@@ -5,6 +5,7 @@ pub enum Command {
     RunWorkflow,
     FocusWorkflow,
     FocusHistory,
+    FocusLogs,
     SelectNext,
     SelectPrevious,
 }

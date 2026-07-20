@@ -6,16 +6,15 @@ use ratatui::{
 
 mod footer;
 mod history;
+mod logs;
 mod workflows;
 
 pub fn draw(frame: &mut Frame, app: &mut App) {
-    let vertical =
-        Layout::vertical([Constraint::Length(20), Constraint::Fill(1)]).split(frame.area());
-    /*
     let horizontal =
-        Layout::horizontal([Constraint::Length(30), Constraint::Fill(1)]).split(vertical[1]);
-    */
-    //footer::draw(frame, app, vertical[1]);
-    history::draw(frame, app, vertical[1]);
-    workflows::draw(frame, app, vertical[0]);
+        Layout::horizontal([Constraint::Length(30), Constraint::Fill(1)]).split(frame.area());
+    let left =
+        Layout::vertical([Constraint::Length(20), Constraint::Fill(1)]).split(horizontal[0]);
+    workflows::draw(frame, app, left[0]);
+    history::draw(frame, app, left[1]);
+    logs::draw(frame, app, horizontal[1]);
 }
