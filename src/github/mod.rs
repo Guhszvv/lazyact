@@ -43,9 +43,12 @@ pub fn list_actions(dir: &Path) -> Result<Vec<Workflow>> {
             let file = File::open(&path)?;
             let wf: WorkflowYaml = serde_yaml::from_reader(file)
                 .map_err(|e| io::Error::new(io::ErrorKind::InvalidData, e))?;
-            let name = wf
-                .name
-                .unwrap_or_else(|| path.file_stem().unwrap_or_default().to_string_lossy().into_owned());
+            let name = wf.name.unwrap_or_else(|| {
+                path.file_stem()
+                    .unwrap_or_default()
+                    .to_string_lossy()
+                    .into_owned()
+            });
 
             workflows.push(Workflow { name, path });
         }

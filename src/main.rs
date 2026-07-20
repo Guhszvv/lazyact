@@ -1,3 +1,4 @@
+mod act;
 mod app;
 mod github;
 mod input;
@@ -8,7 +9,8 @@ use app::App;
 use ratatui::DefaultTerminal;
 use ratatui::crossterm::event::{self, Event};
 
-fn main() -> std::io::Result<()> {
+#[tokio::main]
+async fn main() -> std::io::Result<()> {
     let mut terminal = ratatui::init();
     let result = app(&mut terminal);
     ratatui::restore();

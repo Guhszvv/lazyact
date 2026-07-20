@@ -1,4 +1,5 @@
 use super::Panel;
+use crate::act::act_run_workflow;
 use crate::github::Workflow;
 use crate::input::Command;
 use ratatui::widgets::ListState;
@@ -17,15 +18,22 @@ impl WorkflowPanel {
     }
     fn run_workflow(&mut self) {
         if let Some(item) = self.list_state.selected() {
-            let Some(workflow) = self.workflows.get(item) else {
+            let Some(path) = self.workflows.get(item).map(|w| w.path.clone()) else {
                 return;
             };
-            println!("{}", workflow.path.display());
+
+            tokio::spawn(async move {
+                if let Err(err) = act_run_workflow(&path).await {
+                    eprintln!("{err}");
+                }
+            });
         }
     }
+
     fn select_next(&mut self) {
         self.list_state.select_next();
     }
+
     fn select_previous(&mut self) {
         self.list_state.select_previous();
     }

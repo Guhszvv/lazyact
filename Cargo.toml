@@ -7,3 +7,4 @@ edition = "2024"
 ratatui = "0.30.2"
 serde = { version = "1", features = ["derive"] }
 serde_yaml = "0.9.34"
+tokio = { version = "1.53.1", features = ["full"] }
