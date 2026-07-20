@@ -18,7 +18,9 @@ impl LogsPanel {
 
     pub fn push_event(&mut self, event: AppEvent) {
         match event {
-            AppEvent::WorkflowStarted => self.lines.push("▶ Workflow started".into()),
+            AppEvent::WorkflowStarted(name) => {
+                self.lines.push(format!("▶ {name} started"));
+            }
             AppEvent::Stdout(line) => self.lines.push(line),
             AppEvent::Stderr(line) => self.lines.push(format!("⚠ {line}")),
             AppEvent::WorkflowFinished(code) => {

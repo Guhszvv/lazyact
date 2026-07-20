@@ -1,0 +1,26 @@
+name: Test Workflow
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Mostrar diretório
+        run: pwd
+
+      - name: Listar arquivos
+        run: ls -la
+
+      - name: Esperar
+        run: sleep 3
+
+      - name: Mensagem final
+        run: |
+          echo "Workflow executado com sucesso!"
+          echo "Data: $(date)"

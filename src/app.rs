@@ -58,6 +58,7 @@ impl App {
     }
 
     pub fn handle_event(&mut self, event: AppEvent) {
+        self.history_panel.push_event(event.clone());
         self.logs_panel.push_event(event);
     }
 

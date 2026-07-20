@@ -1,6 +1,6 @@
 mod act;
-mod app_event;
 mod app;
+mod app_event;
 mod github;
 mod input;
 mod panels;

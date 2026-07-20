@@ -5,8 +5,8 @@ use tokio::process::Command;
 
 use crate::app_event::{AppEvent, EventSender};
 
-pub async fn act_run_workflow(path: &Path, tx: EventSender) {
-    tx.send(AppEvent::WorkflowStarted).ok();
+pub async fn act_run_workflow(name: String, path: &Path, tx: EventSender) {
+    tx.send(AppEvent::WorkflowStarted(name)).ok();
 
     let child = Command::new("act")
         .arg("-W")

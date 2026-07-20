@@ -22,12 +22,14 @@ impl WorkflowPanel {
 
     fn run_workflow(&mut self) {
         if let Some(item) = self.list_state.selected() {
-            let Some(path) = self.workflows.get(item).map(|w| w.path.clone()) else {
+            let Some(workflow) = self.workflows.get(item) else {
                 return;
             };
+            let path = workflow.path.clone();
+            let name = workflow.name.clone();
             let tx = self.tx.clone();
             tokio::spawn(async move {
-                act_run_workflow(&path, tx).await;
+                act_run_workflow(name, &path, tx).await;
             });
         }
     }

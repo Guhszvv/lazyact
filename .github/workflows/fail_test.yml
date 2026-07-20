@@ -1,0 +1,25 @@
+name: Fail Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    container:
+      image: alpine:latest
+
+    steps:
+      - name: Iniciar teste
+        run: |
+          echo "Iniciando workflow..."
+
+      - name: Simular erro
+        run: |
+          echo "Algo deu errado!"
+          exit 1
+
+      - name: Nunca executa
+        run: |
+          echo "Você não deveria ver isso"

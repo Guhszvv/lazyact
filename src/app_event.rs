@@ -2,7 +2,7 @@ use tokio::sync::mpsc;
 
 #[derive(Debug, Clone)]
 pub enum AppEvent {
-    WorkflowStarted,
+    WorkflowStarted(String),
     Stdout(String),
     Stderr(String),
     WorkflowFinished(i32),

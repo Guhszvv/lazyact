@@ -4,7 +4,6 @@ use ratatui::{
     layout::{Constraint, Layout},
 };
 
-mod footer;
 mod history;
 mod logs;
 mod workflows;
