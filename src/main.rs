@@ -1,11 +1,12 @@
 mod app;
 mod github;
+mod input;
+mod panels;
 mod ui;
-use crate::app::App;
-use ratatui::{
-    DefaultTerminal,
-    crossterm::{self, event::KeyCode},
-};
+
+use app::App;
+use ratatui::DefaultTerminal;
+use ratatui::crossterm::event::{self, Event};
 
 fn main() -> std::io::Result<()> {
     let mut terminal = ratatui::init();
@@ -16,15 +17,13 @@ fn main() -> std::io::Result<()> {
 
 fn app(terminal: &mut DefaultTerminal) -> std::io::Result<()> {
     let mut app = App::new();
-    loop {
+    while app.running {
         terminal.draw(|frame| {
             ui::draw(frame, &mut app);
         })?;
-        if crossterm::event::read()?
-            .as_key_press_event()
-            .is_some_and(|key| key.code == KeyCode::Char('q'))
-        {
-            break Ok(());
+        if let Event::Key(key) = event::read()? {
+            app.handle_key(key);
         }
     }
+    Ok(())
 }
