@@ -1,5 +1,6 @@
 use super::Panel;
 use crate::act::act_run_workflow;
+use crate::app_event::EventSender;
 use crate::github::Workflow;
 use crate::input::Command;
 use ratatui::widgets::ListState;
@@ -7,13 +8,15 @@ use ratatui::widgets::ListState;
 pub struct WorkflowPanel {
     pub workflows: Vec<Workflow>,
     pub list_state: ListState,
+    pub tx: EventSender,
 }
 
 impl WorkflowPanel {
-    pub fn new(workflows: Vec<Workflow>, list_state: ListState) -> Self {
+    pub fn new(workflows: Vec<Workflow>, list_state: ListState, tx: EventSender) -> Self {
         Self {
             workflows,
             list_state,
+            tx,
         }
     }
 
@@ -22,11 +25,9 @@ impl WorkflowPanel {
             let Some(path) = self.workflows.get(item).map(|w| w.path.clone()) else {
                 return;
             };
-
+            let tx = self.tx.clone();
             tokio::spawn(async move {
-                if let Err(err) = act_run_workflow(&path).await {
-                    eprintln!("{err}");
-                }
+                act_run_workflow(&path, tx).await;
             });
         }
     }

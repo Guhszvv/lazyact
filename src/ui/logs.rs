@@ -3,7 +3,8 @@ use ratatui::{
     Frame,
     layout::Rect,
     style::{Color, Style},
-    widgets::Block,
+    widgets::{Block, Paragraph},
+    text::Line,
 };
 
 pub fn draw(frame: &mut Frame, app: &mut App, area: Rect) {
@@ -14,5 +15,14 @@ pub fn draw(frame: &mut Frame, app: &mut App, area: Rect) {
     } else {
         Style::default()
     });
-    frame.render_widget(container, area);
+
+    let lines: Vec<Line> = app
+        .logs_panel
+        .lines
+        .iter()
+        .map(|l| Line::from(l.as_str()))
+        .collect();
+
+    let paragraph = Paragraph::new(lines).block(container);
+    frame.render_widget(paragraph, area);
 }
