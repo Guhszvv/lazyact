@@ -15,7 +15,7 @@
 ## Quick start
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/Guhszvv/lazyact/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/Guhszvv/lazyact/master/install.sh | bash
 ```
 
 **Prerequisites:** `act` and `docker` installed.
