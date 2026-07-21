@@ -1,6 +1,6 @@
-# lazyact
+<h1 align="center">lazyact</h1>
 
-> TUI tool to list and run GitHub Actions workflows locally.
+<p align="center">TUI tool to list and run GitHub Actions workflows locally.</p>
 
 <p align="center">
   <img src=".github/screenshot.png" alt="lazyact screenshot" width="80%">
@@ -11,7 +11,6 @@
 - Lists workflows from `.github/workflows/`
 - Runs workflows via `act` directly from the TUI
 - 3 panels: Workflows, History, Logs
-- Keyboard navigation, scroll, loading spinner
 
 ## Quick start
 
@@ -19,7 +18,7 @@
 cargo run
 ```
 
-**Prerequisite:** `act` CLI installed and on `$PATH`.
+**Prerequisite:** `act` amd `docker` installed.
 
 ## Keybindings
 
@@ -32,12 +31,8 @@ cargo run
 | `PgUp`/`PgDn` | Scroll page up/down |
 | `Home`/`End` | Scroll to top/bottom |
 
-Mouse scroll works when Logs panel is focused.
-
-## Architecture
-
-3 independent panels + async event channel (tokio mpsc). Workflow execution spawns an `act` subprocess, streaming stdout/stderr as events.
-
 ## Dependencies
 
-Rust edition 2024, ratatui, tokio, serde_yaml, rattles.
+- Rust: [ratatui](https://github.com/ratatui/ratatui), tokio, serde_yaml, [rattles](https://github.com/vyfor/rattles).
+- Docker
+- [Act](https://github.com/nektos/act)
