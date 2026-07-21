@@ -15,10 +15,10 @@
 ## Quick start
 
 ```sh
-cargo run
+curl -fsSL https://raw.githubusercontent.com/Guhszvv/lazyact/main/install.sh | bash
 ```
 
-**Prerequisite:** `act` amd `docker` installed.
+**Prerequisites:** `act` and `docker` installed.
 
 ## Keybindings
 

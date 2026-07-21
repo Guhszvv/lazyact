@@ -1,4 +1,4 @@
-# Contributing to Lazygit
+# Contributing to lazyact
 
 Thanks for your interest in contributing! Here's everything you need to know.
 
@@ -42,7 +42,5 @@ You don't need an issue to open a PR, but feel free to open one if you want to d
 
 ## How to run (contributors)
 
-1. `git clone https://github.com/Guhszvv/NyArquive.git && cd NyArquive`
-2. `chmod +x ./install.sh && ./install.sh`
-3. Drop your PDFs in `./books`
-4. `./backend/target/release/nyarquive`
+1. `git clone https://github.com/Guhszvv/lazyact.git && cd lazyact`
+2. `cargo run`
