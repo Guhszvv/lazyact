@@ -1,0 +1,48 @@
+# Contributing to Lazygit
+
+Thanks for your interest in contributing! Here's everything you need to know.
+
+## Getting Started
+
+1. Fork the repository
+2. Follow the How to run guide to set up locally
+3. Create a branch from `main` for your changes
+
+## Branch Naming
+
+Use a short, descriptive name prefixed by the type of change:
+
+- `feat/context-popup`
+- `fix/build-script-path`
+- `docs/contributing-guide`
+
+## Commit Convention
+
+This project follows a simple commit convention:
+
+| Prefix | When to use |
+|--------|-------------|
+| `feat:` | New feature |
+| `fix:` | Bug fix |
+| `docs:` | Documentation only |
+| `style:` | Formatting, no logic change |
+| `refactor:` | Code change that isn't a fix or feature |
+| `chore:` | Build process, dependencies, configs |
+
+## Opening a Pull Request
+
+- PRs should target the `main` branch
+- Keep PRs focused — one feature or fix per PR
+- Describe **what** you changed and **why**
+- If your PR is a work in progress, open it as a **Draft**
+
+## Issues
+
+You don't need an issue to open a PR, but feel free to open one if you want to discuss an idea before implementing it.
+
+## How to run (contributors)
+
+1. `git clone https://github.com/Guhszvv/NyArquive.git && cd NyArquive`
+2. `chmod +x ./install.sh && ./install.sh`
+3. Drop your PDFs in `./books`
+4. `./backend/target/release/nyarquive`
