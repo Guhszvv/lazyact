@@ -3,7 +3,7 @@
 > TUI tool to list and run GitHub Actions workflows locally.
 
 <p align="center">
-  <img src=".github/screenshot.png" alt="lazyact screenshot" width="80%">
+  <img src=".github/demo.gif" alt="lazyact screenshot" width="80%">
 </p>
 
 ## Features
