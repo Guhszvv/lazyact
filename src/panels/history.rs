@@ -1,5 +1,6 @@
 use crate::app_event::AppEvent;
 use crate::input::Command;
+use ratatui::widgets::ListState;
 use rattles::TickedRattler;
 use rattles::presets::braille as presets;
 
@@ -19,16 +20,24 @@ pub struct HistoryEntry {
 pub struct HistoryPanel {
     pub entries: Vec<HistoryEntry>,
     pub rattle: TickedRattler<presets::Dots>,
+    pub list_state: ListState,
 }
 
 impl HistoryPanel {
-    pub fn new() -> Self {
+    pub fn new(list_state: ListState) -> Self {
         Self {
             entries: Vec::new(),
             rattle: presets::dots().into_ticked(),
+            list_state,
         }
     }
+    fn select_next(&mut self) {
+        self.list_state.select_next();
+    }
 
+    fn select_previous(&mut self) {
+        self.list_state.select_previous();
+    }
     pub fn push_event(&mut self, event: AppEvent) {
         match event {
             AppEvent::WorkflowStarted(name) => {
@@ -67,5 +76,11 @@ impl HistoryPanel {
 }
 
 impl Panel for HistoryPanel {
-    fn handle_command(&mut self, _command: Command) {}
+    fn handle_command(&mut self, command: Command) {
+        match command {
+            Command::SelectNext => self.select_next(),
+            Command::SelectPrevious => self.select_previous(),
+            _ => {}
+        }
+    }
 }

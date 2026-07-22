@@ -34,7 +34,7 @@ impl App {
             keymap: KeyMap::new(),
             focus: Focus::Workflows,
             workflow_panel: WorkflowPanel::new(workflows, state, tx),
-            history_panel: HistoryPanel::new(),
+            history_panel: HistoryPanel::new(state),
             logs_panel: LogsPanel::new(),
             event_rx: rx,
         }

@@ -36,9 +36,6 @@ pub fn draw(frame: &mut Frame, app: &mut App, area: Rect) {
         })
         .collect();
 
-    let inner = block.inner(area);
-    frame.render_widget(block, area);
-
-    let list = List::new(items);
-    frame.render_widget(list, inner);
+    let list = List::new(items).block(block).highlight_symbol("> ");
+    frame.render_stateful_widget(list, area, &mut app.history_panel.list_state);
 }
