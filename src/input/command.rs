@@ -14,4 +14,5 @@ pub enum Command {
     ScrollPageDown,
     ScrollTop,
     ScrollBottom,
+    Expand,
 }
