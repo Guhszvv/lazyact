@@ -31,6 +31,29 @@ pub async fn act_run_workflow(name: String, path: &Path, tx: EventSender) {
         let reader = BufReader::new(stdout);
         let mut lines = reader.lines();
         while let Ok(Some(line)) = lines.next_line().await {
+            if line.contains('⭐') {
+                if let Some(name) = line.split("⭐").nth(1).map(|s| s.trim().strip_prefix("Run ").unwrap_or(s.trim()).to_string()) {
+                    tx_stdout.send(AppEvent::StepStarted(name)).ok();
+                }
+            } else if line.contains('✅') {
+                if let Some(after) = line.split("✅").nth(1) {
+                    let name = after
+                        .split(" - ")
+                        .nth(1)
+                        .unwrap_or(after)
+                        .trim()
+                        .to_string();
+                    tx_stdout.send(AppEvent::StepFinished(name)).ok();
+                }
+            } else if line.contains('❌') && let Some(after) = line.split("❌").nth(1) {
+                let name = after
+                    .split(" - ")
+                    .nth(1)
+                    .unwrap_or(after)
+                    .trim()
+                    .to_string();
+                tx_stdout.send(AppEvent::StepError(name)).ok();
+            }
             if tx_stdout.send(AppEvent::Stdout(line)).is_err() {
                 break;
             }
