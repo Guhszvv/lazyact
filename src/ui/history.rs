@@ -2,11 +2,12 @@ use ratatui::{
     Frame,
     layout::Rect,
     style::{Color, Style},
+    text::{Line, Text},
     widgets::{Block, BorderType, List, ListItem},
 };
 
 use crate::app::{App, Focus};
-use crate::panels::history::HistoryStatus;
+use crate::panels::history::{HistoryStatus, StepStatus};
 
 pub fn draw(frame: &mut Frame, app: &mut App, area: Rect) {
     let focused = app.focus == Focus::History;
@@ -28,11 +29,23 @@ pub fn draw(frame: &mut Frame, app: &mut App, area: Rect) {
         .iter()
         .map(|entry| {
             let icon = match &entry.status {
-                HistoryStatus::Running => app.history_panel.rattle.current_frame(),
+                HistoryStatus::Running => app.history_panel.spinner_char(),
                 HistoryStatus::Success => "✓",
                 HistoryStatus::Failed => "✗",
             };
-            ListItem::new(format!(" {} {}", icon, entry.name))
+            let mut lines = vec![Line::from(format!("{} {}", icon, entry.name))];
+            if entry.expanded {
+                for step in &entry.steps {
+                    let step_icon = match &step.status {
+                        StepStatus::Pending => "·",
+                        StepStatus::Running => app.history_panel.spinner_char(),
+                        StepStatus::Success => "✓",
+                        StepStatus::Failed => "✗",
+                    };
+                    lines.push(Line::from(format!("  {} {}", step_icon, step.name)));
+                }
+            }
+            ListItem::new(Text::from(lines))
         })
         .collect();
 
