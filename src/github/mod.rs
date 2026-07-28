@@ -12,6 +12,7 @@ use serde::Deserialize;
 struct StepYaml {
     name: Option<String>,
     run: Option<String>,
+    uses: Option<String>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -85,7 +86,7 @@ fn parse_steps(wf: &WorkflowYaml) -> Vec<String> {
                     let step_name = step
                         .name
                         .clone()
-                        .or_else(|| step.run.clone())
+                        .or_else(|| step.run.clone().or(step.uses.clone()))
                         .unwrap_or_else(|| "Unnamed Step".to_string());
 
                     steps.push(step_name);
