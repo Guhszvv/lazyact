@@ -2,7 +2,7 @@ use ratatui::{
     Frame,
     layout::Rect,
     style::{Color, Style},
-    text::{Line, Text},
+    text::{Line, Span, Text},
     widgets::{Block, BorderType, List, ListItem},
 };
 
@@ -23,26 +23,44 @@ pub fn draw(frame: &mut Frame, app: &mut App, area: Rect) {
 
     app.history_panel.rattle.tick();
 
+    let spinner = app.history_panel.spinner_char();
+
     let items: Vec<ListItem> = app
         .history_panel
         .entries
         .iter()
         .map(|entry| {
-            let icon = match &entry.status {
-                HistoryStatus::Running => app.history_panel.spinner_char(),
-                HistoryStatus::Success => "✓",
-                HistoryStatus::Failed => "✗",
+            let (icon, style) = match &entry.status {
+                HistoryStatus::Running => (spinner.as_str(), Style::default().fg(Color::Yellow)),
+                HistoryStatus::Success => ("✓", Style::default().fg(Color::Green)),
+                HistoryStatus::Failed => ("✗", Style::default().fg(Color::Red)),
             };
-            let mut lines = vec![Line::from(format!("{} {}", icon, entry.name))];
+            let mut lines = vec![Line::from(vec![
+                Span::styled(icon, style),
+                Span::raw(" "),
+                Span::raw(&entry.name),
+            ])];
             if entry.expanded {
-                for step in &entry.steps {
-                    let step_icon = match &step.status {
-                        StepStatus::Pending => "·",
-                        StepStatus::Running => app.history_panel.spinner_char(),
-                        StepStatus::Success => "✓",
-                        StepStatus::Failed => "✗",
+                let steps = &entry.steps;
+                let len = steps.len();
+                for (idx, step) in steps.iter().enumerate() {
+                    let connector = if idx == len - 1 { "╰─" } else { "├─" };
+                    let (step_icon, step_style) = match &step.status {
+                        StepStatus::Pending => ("·", Style::default()),
+                        StepStatus::Running => {
+                            (spinner.as_str(), Style::default().fg(Color::Yellow))
+                        }
+                        StepStatus::Success => ("✓", Style::default().fg(Color::Green)),
+                        StepStatus::Failed => ("✗", Style::default().fg(Color::Red)),
                     };
-                    lines.push(Line::from(format!("  {} {}", step_icon, step.name)));
+                    lines.push(Line::from(vec![
+                        Span::raw("  "),                     // indent
+                        Span::raw(connector),                // ├─ or ╰─
+                        Span::raw(" "),                      // gap after connector
+                        Span::styled(step_icon, step_style), // status icon
+                        Span::raw(" "),                      // gap before name
+                        Span::raw(&step.name),
+                    ]));
                 }
             }
             ListItem::new(Text::from(lines))

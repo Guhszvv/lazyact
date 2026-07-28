@@ -65,8 +65,8 @@ impl HistoryPanel {
         self.list_state.select_previous();
     }
 
-    pub fn spinner_char(&self) -> &str {
-        self.rattle.current_frame()
+    pub fn spinner_char(&self) -> String {
+        self.rattle.current_frame().to_string()
     }
 
     pub fn push_event(&mut self, event: AppEvent) {
