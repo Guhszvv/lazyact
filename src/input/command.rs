@@ -15,4 +15,5 @@ pub enum Command {
     ScrollTop,
     ScrollBottom,
     Expand,
+    ClearLogs,
 }
