@@ -2,6 +2,6 @@
 
 ## v0.2.0
 
-- [ ] Display workflow steps in the history panel
+- [x] Display workflow steps in the history panel
 - [ ] Keybind for clear logs panel
 - [ ] Update checker

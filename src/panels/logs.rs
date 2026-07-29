@@ -29,6 +29,15 @@ impl LogsPanel {
             AppEvent::WorkflowError(err) => {
                 self.lines.push(format!("✗ Error: {err}"));
             }
+            AppEvent::StepStarted(step) => {
+                self.lines.push(format!("▶ Step: {step}"));
+            }
+            AppEvent::StepFinished(step) => {
+                self.lines.push(format!("✓ Step: {step}"));
+            }
+            AppEvent::StepError(step) => {
+                self.lines.push(format!("✗ Step: {step}"));
+            }
         }
     }
 

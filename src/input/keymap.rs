@@ -2,7 +2,6 @@ use ratatui::crossterm::event::{KeyCode, KeyEvent, KeyEventKind};
 
 use super::command::Command;
 
-/// Centraliza o mapeamento de teclas para comandos.
 pub struct KeyMap;
 
 impl KeyMap {
@@ -27,6 +26,7 @@ impl KeyMap {
             KeyCode::PageDown => Some(Command::ScrollPageDown),
             KeyCode::Home => Some(Command::ScrollTop),
             KeyCode::End => Some(Command::ScrollBottom),
+            KeyCode::Enter => Some(Command::Expand),
             _ => None,
         }
     }

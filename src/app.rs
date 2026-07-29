@@ -33,8 +33,8 @@ impl App {
             running: true,
             keymap: KeyMap::new(),
             focus: Focus::Workflows,
-            workflow_panel: WorkflowPanel::new(workflows, state, tx),
-            history_panel: HistoryPanel::new(),
+            workflow_panel: WorkflowPanel::new(workflows.clone(), state, tx),
+            history_panel: HistoryPanel::new(state, workflows),
             logs_panel: LogsPanel::new(),
             event_rx: rx,
         }
