@@ -51,6 +51,12 @@ impl LogsPanel {
             self.scroll_offset = max;
         }
     }
+
+    pub fn clear_logs(&mut self) {
+        self.lines.clear();
+        self.scroll_offset = 0;
+        self.auto_scroll = true;
+    }
 }
 
 impl Panel for LogsPanel {
@@ -86,6 +92,9 @@ impl Panel for LogsPanel {
             Command::ScrollBottom => {
                 self.scroll_offset = max;
                 self.auto_scroll = true;
+            }
+            Command::ClearLogs => {
+                self.clear_logs();
             }
             _ => {}
         }
