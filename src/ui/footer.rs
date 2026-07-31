@@ -7,6 +7,7 @@ pub fn draw(frame: &mut Frame, focus: &Focus, area: Rect) {
         Focus::Workflows => " [q] Quit │ [r] Run │ [↑/↓] Select",
         Focus::History => " [q] Quit │ [↑/↓] Select │ [Enter] Expand",
         Focus::Logs => " [q] Quit │ [↑/↓] Scroll │ [PgUp/Dn] Page │ [Home/End] Jump | [c] Clear",
+        Focus::Popup => "[q] Quit",
     };
     // ponytail: single-line text footer, no styling/abstractions
     frame.render_widget(Paragraph::new(text), area);
