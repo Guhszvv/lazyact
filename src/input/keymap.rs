@@ -27,6 +27,7 @@ impl KeyMap {
             KeyCode::Home => Some(Command::ScrollTop),
             KeyCode::End => Some(Command::ScrollBottom),
             KeyCode::Enter => Some(Command::Expand),
+            KeyCode::Esc => Some(Command::ClosePopup),
             KeyCode::Char('c') => Some(Command::ClearLogs),
             _ => None,
         }

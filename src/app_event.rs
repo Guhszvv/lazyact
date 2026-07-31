@@ -10,6 +10,7 @@ pub enum AppEvent {
     Stderr(String),
     WorkflowFinished(i32),
     WorkflowError(String),
+    UpdateAvailable(String),
 }
 
 pub type EventSender = mpsc::UnboundedSender<AppEvent>;
