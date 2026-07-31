@@ -38,6 +38,7 @@ impl LogsPanel {
             AppEvent::StepError(step) => {
                 self.lines.push(format!("✗ Step: {step}"));
             }
+            AppEvent::UpdateAvailable(_) => {}
         }
     }
 
