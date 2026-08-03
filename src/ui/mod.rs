@@ -7,6 +7,7 @@ use ratatui::{
 mod footer;
 mod history;
 mod logs;
+mod update_popup;
 mod workflows;
 
 pub fn draw(frame: &mut Frame, app: &mut App) {
@@ -18,4 +19,9 @@ pub fn draw(frame: &mut Frame, app: &mut App) {
     history::draw(frame, app, left[1]);
     logs::draw(frame, app, horizontal[1]);
     footer::draw(frame, &app.focus, main[1]);
+
+    if app.popup_active {
+        let version = app.update_version.clone();
+        update_popup::draw(frame, app, &version, frame.area());
+    }
 }

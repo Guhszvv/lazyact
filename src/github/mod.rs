@@ -7,6 +7,7 @@ use std::{
 };
 
 use serde::Deserialize;
+pub mod update_checker;
 
 #[derive(Debug, Deserialize)]
 struct StepYaml {

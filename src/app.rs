@@ -2,13 +2,14 @@ use ratatui::crossterm::event::{KeyEvent, MouseEvent};
 
 use crate::app_event::{AppEvent, EventReceiver};
 use crate::input::{Command, KeyMap};
-use crate::panels::{HistoryPanel, LogsPanel, Panel, WorkflowPanel};
+use crate::panels::{HistoryPanel, LogsPanel, Panel, PopupPanel, WorkflowPanel};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Focus {
     Workflows,
     History,
     Logs,
+    Popup,
 }
 
 pub struct App {
@@ -18,7 +19,11 @@ pub struct App {
     pub workflow_panel: WorkflowPanel,
     pub history_panel: HistoryPanel,
     pub logs_panel: LogsPanel,
+    pub popup_panel: PopupPanel,
     pub event_rx: EventReceiver,
+    pub popup_active: bool,
+    pub update_available: bool,
+    pub update_version: String,
 }
 
 impl App {
@@ -29,6 +34,15 @@ impl App {
         };
         let state = ratatui::widgets::ListState::default().with_selected(Some(0));
         let (tx, rx) = crate::app_event::new_event_channel();
+        let update_tx = tx.clone();
+        tokio::spawn(async move {
+            if let Ok((available, version)) = crate::github::update_checker::update_checker().await
+                && available
+            {
+                let _ = update_tx.send(AppEvent::UpdateAvailable(version));
+            }
+        });
+
         Self {
             running: true,
             keymap: KeyMap::new(),
@@ -36,7 +50,11 @@ impl App {
             workflow_panel: WorkflowPanel::new(workflows.clone(), state, tx),
             history_panel: HistoryPanel::new(state, workflows),
             logs_panel: LogsPanel::new(),
+            popup_panel: PopupPanel::new(),
             event_rx: rx,
+            popup_active: false,
+            update_available: false,
+            update_version: String::new(),
         }
     }
 
@@ -58,6 +76,13 @@ impl App {
     }
 
     pub fn handle_event(&mut self, event: AppEvent) {
+        if let AppEvent::UpdateAvailable(version) = &event {
+            self.popup_active = true;
+            self.focus = Focus::Popup;
+            self.update_available = true;
+            self.update_version = version.clone();
+            return;
+        }
         self.history_panel.push_event(event.clone());
         self.logs_panel.push_event(event);
     }
@@ -65,10 +90,25 @@ impl App {
     fn handle_command(&mut self, command: Command) {
         match command {
             Command::Quit => self.running = false,
+            Command::ClosePopup => {
+                self.popup_active = false;
+                self.focus = Focus::Workflows;
+            }
             Command::FocusWorkflow => self.focus = Focus::Workflows,
             Command::FocusHistory => self.focus = Focus::History,
             Command::FocusLogs => self.focus = Focus::Logs,
-            cmd => self.focused_panel_mut().handle_command(cmd),
+            Command::ClearLogs => {
+                if self.popup_active {
+                    return;
+                }
+                self.focused_panel_mut().handle_command(command);
+            }
+            cmd => {
+                if self.popup_active {
+                    return;
+                }
+                self.focused_panel_mut().handle_command(cmd);
+            }
         }
     }
 
@@ -77,6 +117,7 @@ impl App {
             Focus::Workflows => &mut self.workflow_panel,
             Focus::History => &mut self.history_panel,
             Focus::Logs => &mut self.logs_panel,
+            Focus::Popup => &mut self.popup_panel,
         }
     }
 }
